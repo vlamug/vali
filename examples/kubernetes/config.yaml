@@ -1,0 +1,22 @@
+rules:
+  # rules for metadata
+  - field: "apiVersion"
+    match: "v1"
+  - field: "kind"
+    match: "LimitRange"
+  - field: "metadata.name"
+    match_re: '^[a-zA-Z-]+$'
+
+  # rules for spec
+  - field: "spec.limits"
+    items:
+      - field: "max.cpu"
+        match_re: '^\d{0,3}m$'
+      - field: "max.memory"
+        match_re: '^\dGi|\d{0,3}Mi$'
+      - field: "min.cpu"
+        match_re: '^\d{0,3}m$'
+      - field: "min.memory"
+        match_re: '^\dGi|\d{0,3}Mi$'
+      - field: "type"
+        anyOf: ["Pod", "Container"]
